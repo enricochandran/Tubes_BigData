@@ -118,7 +118,7 @@ elif menu == "Dashboard":
             # Tombol download
             csv = data_dw.to_csv(index=False).encode('utf-8')
             st.download_button(
-                label=f"=Download {pilihan_tabel}.csv",
+                label=f"Download {pilihan_tabel}.csv",
                 data=csv,
                 file_name=f'{pilihan_tabel}.csv',
                 mime='text/csv',
@@ -221,4 +221,5 @@ elif menu == "Link":
     * [📈 Dashboard Full Screen](https://app.powerbi.com/view?r=eyJrIjoiNmExYmQyNDktYjhkNi00ZWI2LTkyOWUtZGM5ZTdmNzVmNjlkIiwidCI6IjkwYWZmZTBmLWMyYTMtNDEwOC1iYjk4LTZjZWI0ZTk0ZWYxNSIsImMiOjEwfQ%3D%3D)
 
     """)
+
 
