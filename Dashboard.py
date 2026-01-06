@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
 from sqlalchemy import create_engine
+import sqlite3
 
 # --- 1. KONFIGURASI HALAMAN ---
 st.set_page_config(
@@ -13,26 +14,24 @@ st.set_page_config(
 # --- 2. FUNGSI KONEKSI DATABASE (DINAMIS) ---
 @st.cache_data
 def load_data_from_dw(table_name):
-    # Konfigurasi Database
-    DB_USER = 'root'
-    DB_PASS = ''       # Sesuaikan password Anda
-    DB_HOST = 'localhost'
-    DB_PORT = '3306'
-    DB_NAME = 'olist_dw'
+    # Nama file database SQLite (Pastikan file ini ada di GitHub)
+    DB_FILE = 'olist_dw.db'
     
     try:
-        connection_str = f"mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-        engine = create_engine(connection_str)
+        # Membuat koneksi ke SQLite
+        conn = sqlite3.connect(DB_FILE)
         
-        # Query mengambil SEMUA data dari tabel yang dipilih
+        # Query mengambil SEMUA data
         query = f"SELECT * FROM {table_name}"
         
-        with engine.connect() as conn:
-            df = pd.read_sql(query, conn)
+        # Membaca SQL
+        df = pd.read_sql(query, conn)
+        conn.close()
+        
         return df
         
     except Exception as e:
-        return str(e)
+        return f"Terjadi kesalahan: {e}. Pastikan file '{DB_FILE}' sudah di-upload ke GitHub."
 
 # --- 3. INISIALISASI STATE ---
 if 'halaman_aktif' not in st.session_state:
@@ -220,4 +219,5 @@ elif menu == "Link":
     * [📂 Dataset Sumber Brazil Inflation Data (Kaggle)](https://www.kaggle.com/datasets/lucashmateo/brazil-inflation-data)
     * [💻 Github Project](https://github.com/keripikkaneboo/bigdata/tree/main/bigdata_final_project)
     * [📈 Dashboard Full Screen](https://app.powerbi.com/view?r=eyJrIjoiNmExYmQyNDktYjhkNi00ZWI2LTkyOWUtZGM5ZTdmNzVmNjlkIiwidCI6IjkwYWZmZTBmLWMyYTMtNDEwOC1iYjk4LTZjZWI0ZTk0ZWYxNSIsImMiOjEwfQ%3D%3D)
+
     """)
